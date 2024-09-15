@@ -7,3 +7,4 @@
 - [x] Marcar/Desmarcar metas realizadas
 - [x] Deletar metas
 - [x] Sistema de mensagens
+- [x] Persistir dados
