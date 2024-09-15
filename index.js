@@ -1,5 +1,7 @@
 const {select, input, checkbox} = require("@inquirer/prompts");
 
+let mensagem = ("Bem-vindo ao App de Metas - NLW Pocket JS");
+
 let meta = {
     value: "Tomar 2L de água por dia",
     checked: false
@@ -13,14 +15,16 @@ const CadastrarMetas = async () => {
     })
 
     if(meta.length == 0) {
-        console.log("\tmeta não pode ser vazia‼");
-        return CadastrarMetas();
+        mensagem = "\tmeta não pode ser vazia‼"
+        return // CadastrarMetas();
     }
 
     metas.push({
         value: meta,
         checked: false
     })
+
+    mensagem = ("\tMeta cadastrada com sucesso‼ ヽ(°ᴥ°)ﾉ");
 }
 
 const ListarMetas = async () => {
@@ -35,8 +39,8 @@ const ListarMetas = async () => {
     })
 
     if(respostas.length == 0) {
-        console.log("\tNenhuma meta selecionada‼");
-        return ListarMetas();
+        mensagem = "\tNenhuma meta selecionada‼"
+        return // ListarMetas();
     }
 
     respostas.forEach((resposta) => {
@@ -47,7 +51,7 @@ const ListarMetas = async () => {
         meta.checked = true;
     })
 
-    console.log("Meta(s) concluída(s)‼");
+    mensagem = ("\tMeta(s) concluída(s)‼ ヽ(°ᴥ°)ﾉ");
 }
 
 const MetasRealizadas = async () => {
@@ -56,7 +60,7 @@ const MetasRealizadas = async () => {
     })
 
     if(realizadas.length == 0) {
-        console.log("\tNão existem metas realizadas‼ (·•᷄‎ࡇ•᷅ )");
+        mensagem = ("\tNão existem metas realizadas‼ (·•᷄‎ࡇ•᷅ )");
         return;
     }
 
@@ -72,7 +76,7 @@ const MetasAbertas = async () => {
     })
 
     if(abertas.length == 0) {
-        console.log("\tNão existem metas abertas‼ (·•᷄‎ࡇ•᷅ )");
+        mensagem = "\tNão existem metas abertas‼ (·•᷄‎ࡇ•᷅ )";
         return;
     }
 
@@ -90,14 +94,14 @@ const DeletarMetas = async () => {
         }
     })
 
-    const Items_A_Deletar = await checkedbox({
+    const Items_A_Deletar = await checkbox({
         message: "\tSelecione item para deletar",
         choices: [...MetasDesmarcadas],
         instructions: false
     })
 
     if(Items_A_Deletar.length == 0) {
-        console.log("\tNenhum item para deletar‼");
+        mensagem = ("\tNenhum item para deletar‼");
         return;
     }
 
@@ -107,12 +111,24 @@ const DeletarMetas = async () => {
         })
     })
 
-    console.log("\tMeta(s) deletada(s) com sucesso‼ ヽ(°ᴥ°)ﾉ");
+    mensagem = ("\tMeta(s) deletada(s) com sucesso‼ ヽ(°ᴥ°)ﾉ");
+}
+
+const MostrarMensagem = () => {
+    console.clear();
+
+    if(mensagem != "") {
+        console.log(mensagem);
+        console.log("");
+        mensagem = "";
+    }   
 }
 
 const start = async () => {
 
     while(true) {
+        MostrarMensagem();
+
         const opcao = await select({
             message: "Menu >",
             choices: [
@@ -146,7 +162,7 @@ const start = async () => {
         switch(opcao) {
             case "cadastrar":
                 await CadastrarMetas();
-                console.log(metas);
+                mensagem = (metas);
                 break;
 
             case "listar": 
@@ -166,7 +182,7 @@ const start = async () => {
                 break;
 
             case "sair":
-                console.log("\tAteciosamente, até a próxima‼")
+                console.log("\tAteciosamente, até a próxima‼");
                 return;
         }
     }

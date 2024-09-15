@@ -1,1 +1,1 @@
-                         -- App de JS --
+                -- App de Metas - NLW Pocket JS --
