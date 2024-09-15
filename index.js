@@ -7,14 +7,14 @@ let meta = {
 
 let metas = [meta]
 
-const CadastrarMeta = async () => {
+const CadastrarMetas = async () => {
     const meta = await input({
         message: "\tInforme a meta: "
     })
 
     if(meta.length == 0) {
         console.log("\tmeta não pode ser vazia‼");
-        return CadastrarMeta();
+        return CadastrarMetas();
     }
 
     metas.push({
@@ -23,7 +23,7 @@ const CadastrarMeta = async () => {
     })
 }
 
-const ListarMeta = async () => {
+const ListarMetas = async () => {
     const respostas = await checkbox({
         message: "\tUse as Setas para mudar de meta, o Espaço para marcar ou desmarcar e o Enter para finalizar essa etapa",
         choices: [...metas],
@@ -32,7 +32,7 @@ const ListarMeta = async () => {
 
     if(respostas.length == 0) {
         console.log("\tNenhuma meta selecionada‼");
-        return ListarMeta();
+        return ListarMetas();
     }
 
     metas.forEach((m) => {
@@ -50,6 +50,22 @@ const ListarMeta = async () => {
     console.log("Meta(s) concluída(s)‼");
 }
 
+const MetasRealizadas = async () => {
+    const realizadas = metas.filter((meta) => {
+        return meta.checked;
+    })
+
+    if(realizadas.length == 0) {
+        console.log("\tNão existem metas realizadas‼ (·•᷄‎ࡇ•᷅ )");
+        return;
+    }
+
+    await select({
+        message: "Metas realizadas",
+        choices: [...realizadas]
+    })
+}
+
 const start = async () => {
 
     while(true) {
@@ -65,6 +81,10 @@ const start = async () => {
                     value: "listar"
                 },
                 {
+                    name: "Metas realizadas",
+                    value: "realizadas"
+                },
+                {
                     name: "Sair",
                     value: "sair"
                 }
@@ -73,12 +93,16 @@ const start = async () => {
 
         switch(opcao) {
             case "cadastrar":
-                await CadastrarMeta();
+                await CadastrarMetas();
                 console.log(metas);
                 break;
 
             case "listar": 
-                await ListarMeta();
+                await ListarMetas();
+                break;
+
+            case "realizadas": 
+                await MetasRealizadas();
                 break;
 
             case "sair":
